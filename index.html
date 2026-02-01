@@ -40,6 +40,7 @@
     </style>
     <script>
       // Shim esencial para que las librerías no fallen al buscar 'process'
+      // El API_KEY real es inyectado por el entorno de ejecución.
       window.process = { env: { API_KEY: "" } };
     </script>
     <script type="importmap">
