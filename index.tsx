@@ -1,24 +1,16 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-const rootElement = document.getElementById('root');
-const loadingScreen = document.getElementById('loading-screen');
+const container = document.getElementById('root');
+const loader = document.getElementById('loading-screen');
 
-if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-
-  // Ocultar la pantalla de carga después de un pequeño delay para asegurar el renderizado
-  setTimeout(() => {
-    if (loadingScreen) {
-      loadingScreen.style.opacity = '0';
-      setTimeout(() => loadingScreen.remove(), 500);
-    }
-  }, 300);
+if (container) {
+  const root = ReactDOM.createRoot(container);
+  root.render(<App />);
+  
+  // Ocultar cargador después de montar
+  if (loader) {
+    loader.style.display = 'none';
+  }
 }
