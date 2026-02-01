@@ -1,34 +1,42 @@
 
 import { UserData } from "../types";
 
-// Se intenta leer desde el entorno, de lo contrario usa una URL de respaldo para evitar errores fatales.
-const SHEET_CSV_URL = process.env.SHEET_CSV_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vS6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j/pub?output=csv";
+// Protección para evitar que la app se caiga si process no existe
+const getEnv = (key: string, fallback: string) => {
+  try {
+    return (typeof process !== 'undefined' && process.env && process.env[key]) || fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const SHEET_CSV_URL = getEnv("SHEET_CSV_URL", "https://docs.google.com/spreadsheets/d/e/2PACX-1vS6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j/pub?output=csv");
 
 const parseCSV = (csvText: string) => {
-  const lines = csvText.split(/\r?\n/);
+  const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== "");
   if (lines.length === 0) return [];
   const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
   
-  return headers.length > 0 ? lines.slice(1).map(line => {
+  return lines.slice(1).map(line => {
     const values = line.split(',');
     return headers.reduce((obj: any, header, index) => {
       obj[header] = values[index]?.trim();
       return obj;
     }, {});
-  }) : [];
+  });
 };
 
 export const fetchUserData = async (email: string, pin: string): Promise<UserData | null> => {
   try {
     const response = await fetch(`${SHEET_CSV_URL}&t=${Date.now()}`);
-    if (!response.ok) throw new Error("Error al conectar con la base de datos de Google Sheets");
+    if (!response.ok) throw new Error("Error al conectar con la base de datos");
     
     const csvText = await response.text();
     const rows = parseCSV(csvText);
     
     const userRow = rows.find(row => 
-      row.email?.toLowerCase() === email.toLowerCase() && 
-      row.clave === pin
+      row.email?.toLowerCase().trim() === email.toLowerCase().trim() && 
+      row.clave?.trim() === pin.trim()
     );
 
     if (userRow) {
@@ -48,9 +56,9 @@ export const fetchUserData = async (email: string, pin: string): Promise<UserDat
           { 
             id: 'init', 
             type: 'deposito', 
-            amount: (parseFloat(userRow.ahorros) || 0) + (parseFloat(userRow.paxg) || 0) + (parseFloat(userRow.latam) || 0) + (parseFloat(userRow.gldc) || 0), 
+            amount: (parseFloat(userRow.ahorros) || 0) + (parseFloat(userRow.paxg) || 0), 
             date: new Date().toLocaleDateString(), 
-            description: 'Sincronización de activos finalizada' 
+            description: 'Balance sincronizado' 
           }
         ]
       };
@@ -60,9 +68,4 @@ export const fetchUserData = async (email: string, pin: string): Promise<UserDat
     console.error("Sheet Service Error:", error);
     return null;
   }
-};
-
-export const requestLoan = async (email: string, amount: number): Promise<boolean> => {
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return true; 
 };

@@ -14,66 +14,61 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
     if (!email || !pin) {
       setError('Por favor complete todos los campos');
       return;
     }
-    
-    if (pin.length < 6) {
-      setError('La clabe debe tener al menos 6 dígitos');
-      return;
-    }
-
     try {
       await onLogin(email, pin);
     } catch (err) {
-      setError('Error al iniciar sesión. Verifique sus credenciales.');
+      setError('Error al iniciar sesión');
     }
   };
 
   return (
-    <div className="w-full max-w-md bg-slate-800 p-8 rounded-3xl shadow-2xl border border-slate-700">
-      <div className="flex justify-center mb-8">
-        <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center rotate-12 shadow-lg shadow-blue-500/20">
-          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <div className="w-full max-w-sm px-6 py-10 bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-[2.5rem] shadow-2xl">
+      <div className="flex justify-center mb-6">
+        <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-2xl shadow-blue-500/40 transform -rotate-6">
+          <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
         </div>
       </div>
       
-      <h2 className="text-2xl font-bold text-center mb-2">Cryptocagua</h2>
-      <p className="text-slate-400 text-center mb-8">Ahorro y Préstamos Inteligentes</p>
+      <h2 className="text-3xl font-black text-center text-white mb-2">Cryptocagua</h2>
+      <p className="text-slate-400 text-center text-sm mb-10">Banca Digital Cooperativa</p>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Correo Electrónico</label>
+          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-2 px-1">Email</label>
           <input
             type="email"
+            inputMode="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-            placeholder="usuario@ejemplo.com"
+            className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 text-slate-100 focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-700"
+            placeholder="correo@ejemplo.com"
             disabled={isLoading}
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">Clave de Acceso (PIN)</label>
+          <label className="block text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] mb-2 px-1">Clave (PIN)</label>
           <input
             type="password"
+            inputMode="numeric"
+            pattern="[0-9]*"
             maxLength={6}
             value={pin}
             onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
-            className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 tracking-widest text-lg font-mono focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-center"
+            className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 text-slate-100 tracking-[0.5em] text-xl font-mono focus:ring-2 focus:ring-blue-500 outline-none transition-all text-center placeholder:text-slate-800"
             placeholder="••••••"
             disabled={isLoading}
           />
-          <p className="text-xs text-slate-500 mt-2 text-center">Tip: Use 123456 para pruebas</p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-xl text-sm text-center">
+          <div className="bg-rose-500/10 border border-rose-500/30 text-rose-400 p-4 rounded-2xl text-xs font-bold text-center">
             {error}
           </div>
         )}
@@ -81,17 +76,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-blue-500/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-900/20 transition-all disabled:opacity-50 active:scale-[0.98]"
         >
-          {isLoading ? (
-            <>
-              <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Conectando con Sheets...
-            </>
-          ) : 'Iniciar Sesión'}
+          {isLoading ? 'Cargando datos...' : 'ENTRAR AL PANEL'}
         </button>
       </form>
     </div>
