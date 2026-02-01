@@ -1,22 +1,21 @@
 
 import { UserData } from "../types";
 
-// IMPORTANTE: Reemplaza esta URL con el enlace de tu Google Sheet publicado como CSV
-// Archivo > Compartir > Publicar en la Web > Seleccionar Hoja > Formato CSV
-const SHEET_CSV_URL = "https://docs.https://docs.google.com/spreadsheets/d/e/2PACX-1vSxn1E9ViS4uxIEGaGv82S--MCB96GIvtXsUOU-yPjytkf4t1BPssGStDMVdaMm2owbXW18uhxBOh70/pub?gid=0&single=true&output=csv.com/spreadsheets/d/e/2PACX-1vS6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j/pub?output=csv";
+// Se intenta leer desde el entorno, de lo contrario usa una URL de respaldo para evitar errores fatales.
+const SHEET_CSV_URL = process.env.SHEET_CSV_URL || "https://docs.google.com/spreadsheets/d/e/2PACX-1vS6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j-xH_i_v5uF0X6y_mNf2-Jv_UuF_j/pub?output=csv";
 
 const parseCSV = (csvText: string) => {
   const lines = csvText.split(/\r?\n/);
   if (lines.length === 0) return [];
   const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
   
-  return lines.slice(1).map(line => {
+  return headers.length > 0 ? lines.slice(1).map(line => {
     const values = line.split(',');
     return headers.reduce((obj: any, header, index) => {
       obj[header] = values[index]?.trim();
       return obj;
     }, {});
-  });
+  }) : [];
 };
 
 export const fetchUserData = async (email: string, pin: string): Promise<UserData | null> => {
@@ -49,7 +48,7 @@ export const fetchUserData = async (email: string, pin: string): Promise<UserDat
           { 
             id: 'init', 
             type: 'deposito', 
-            amount: parseFloat(userRow.ahorros) || 0, 
+            amount: (parseFloat(userRow.ahorros) || 0) + (parseFloat(userRow.paxg) || 0) + (parseFloat(userRow.latam) || 0) + (parseFloat(userRow.gldc) || 0), 
             date: new Date().toLocaleDateString(), 
             description: 'Sincronización de activos finalizada' 
           }
@@ -64,7 +63,6 @@ export const fetchUserData = async (email: string, pin: string): Promise<UserDat
 };
 
 export const requestLoan = async (email: string, amount: number): Promise<boolean> => {
-  // En un entorno real, aquí podrías integrar una API para registrar la solicitud
   await new Promise(resolve => setTimeout(resolve, 1000));
   return true; 
 };

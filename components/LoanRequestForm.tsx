@@ -11,6 +11,10 @@ const LoanRequestForm: React.FC<LoanRequestFormProps> = ({ user, loanLimit }) =>
   const [amount, setAmount] = useState<string>('');
   const [reason, setReason] = useState('');
   
+  // Variables de entorno para contacto
+  const SUPPORT_PHONE = process.env.SUPPORT_PHONE || "584120000000";
+  const SUPPORT_EMAIL = process.env.SUPPORT_EMAIL || "soporte@cryptocagua.com";
+  
   const fmt = (val: number) => val.toLocaleString(undefined, { 
     minimumFractionDigits: 3, 
     maximumFractionDigits: 3 
@@ -25,16 +29,14 @@ Quedo atento a la aprobación.`;
   };
 
   const handleWhatsApp = () => {
-    const phone = "584120000000"; // Se recomienda usar variable de entorno en producción
-    const url = `https://wa.me/${phone}?text=${encodeURIComponent(generateMessage())}`;
+    const url = `https://wa.me/${SUPPORT_PHONE}?text=${encodeURIComponent(generateMessage())}`;
     window.open(url, '_blank');
   };
 
   const handleEmail = () => {
-    const email = "soporte@cryptocagua.com"; // Se recomienda usar variable de entorno en producción
     const subject = `Solicitud de Préstamo - ${user.name}`;
     const body = generateMessage();
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const isInvalid = !amount || parseFloat(amount) <= 0 || parseFloat(amount) > loanLimit;
@@ -87,12 +89,6 @@ Quedo atento a la aprobación.`;
             Correo
           </button>
         </div>
-        
-        {parseFloat(amount) > loanLimit && (
-          <p className="text-center text-rose-400 text-xs font-bold animate-pulse italic">
-            El monto excede tu límite disponible del 50%.
-          </p>
-        )}
       </div>
     </div>
   );
