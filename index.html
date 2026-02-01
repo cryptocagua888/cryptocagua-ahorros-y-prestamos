@@ -4,44 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cryptocagua Ahorro y Préstamos</title>
+    <title>Cryptocagua</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <style>
-      :root {
-        --bg-main: #0a0f1e;
-        --bg-card: #0f172a;
-      }
-      * {
-        -webkit-tap-highlight-color: transparent;
-        box-sizing: border-box;
-      }
+      :root { --bg: #0a0f1e; }
       body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--bg-main);
-        color: #f8fafc;
+        background-color: var(--bg);
         margin: 0;
-        padding: 0;
-        overflow-x: hidden;
+        font-family: 'Inter', sans-serif;
+        color: white;
+        -webkit-font-smoothing: antialiased;
       }
-      .font-mono {
-        font-family: 'JetBrains Mono', monospace;
+      /* Pantalla de carga inicial antes de que React despierte */
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #0a0f1e;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
       }
-      /* Prevenir scroll horizontal accidental en móviles */
-      html, body {
-        max-width: 100%;
-        overflow-x: hidden;
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(59, 130, 246, 0.1);
+        border-left-color: #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
       }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-<script type="importmap">
+    <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@19.2.4",
-    "react-dom": "https://esm.sh/react-dom@19.2.4",
-    "react-dom/client": "https://esm.sh/react-dom@19.2.4/client",
-    "@google/genai": "https://esm.sh/@google/genai@1.39.0",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@0.21.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/"
   }
@@ -49,6 +54,14 @@
 </script>
 </head>
 <body>
+    <div id="loading-screen">
+      <div class="spinner"></div>
+      <p style="margin-top: 20px; font-size: 12px; font-weight: 800; color: #3b82f6; letter-spacing: 2px;">CRYPTOCAGUA</p>
+    </div>
     <div id="root"></div>
+    <script>
+      // Shim global de process para evitar errores en el navegador
+      window.process = { env: {} };
+    </script>
 </body>
 </html>

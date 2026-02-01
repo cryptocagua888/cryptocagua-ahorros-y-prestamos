@@ -16,32 +16,35 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
   };
 
   return (
-    <div className="w-full max-w-[320px] bg-slate-900/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 shadow-2xl">
+    <div className="w-full max-w-[340px] bg-slate-900/95 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 shadow-2xl mx-auto">
       <div className="flex flex-col items-center mb-10">
-        <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-600/20 mb-4 transform -rotate-3">
-          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+        <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-600/30 mb-4 transform -rotate-3 transition-transform hover:rotate-0">
+          <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
         </div>
-        <h2 className="text-2xl font-black text-white">Cryptocagua</h2>
-        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Ahorro y Préstamos</p>
+        <h2 className="text-2xl font-black text-white tracking-tight">Cryptocagua</h2>
+        <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">Banca de Ahorro</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest ml-1">Email</label>
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Email</label>
           <input
             type="email"
             inputMode="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-4 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-800"
+            className="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-4 text-base focus:ring-2 focus:ring-blue-500 outline-none transition-all placeholder:text-slate-800"
             placeholder="usuario@correo.com"
             disabled={isLoading}
             required
+            autoComplete="email"
           />
         </div>
         
         <div className="space-y-2">
-          <label className="text-[9px] font-black text-slate-600 uppercase tracking-widest ml-1">Pin Secreto</label>
+          <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest ml-1">Pin Secreto</label>
           <input
             type="password"
             inputMode="numeric"
@@ -49,19 +52,20 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
             maxLength={6}
             value={pin}
             onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
-            className="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-4 text-center tracking-[0.5em] text-xl font-mono focus:ring-2 focus:ring-blue-500 outline-none placeholder:text-slate-900"
+            className="w-full bg-slate-950 border border-white/5 rounded-2xl px-5 py-4 text-center tracking-[0.5em] text-2xl font-mono focus:ring-2 focus:ring-blue-500 outline-none placeholder:text-slate-900"
             placeholder="••••"
             disabled={isLoading}
             required
+            autoComplete="current-password"
           />
         </div>
 
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-black py-4 rounded-2xl shadow-lg shadow-blue-600/20 transition-all disabled:opacity-50 text-sm uppercase tracking-widest"
+          className="w-full bg-blue-600 hover:bg-blue-500 active:scale-95 text-white font-black py-5 rounded-2xl shadow-lg shadow-blue-600/20 transition-all disabled:opacity-50 text-sm uppercase tracking-widest mt-4"
         >
-          {isLoading ? 'Conectando...' : 'Entrar'}
+          {isLoading ? 'Conectando...' : 'Iniciar Sesión'}
         </button>
       </form>
     </div>
