@@ -26,26 +26,28 @@
         justify-content: center;
         background: #0a0f1e;
         z-index: 9999;
+        transition: opacity 0.4s ease-out;
       }
       .spinner {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         border: 3px solid rgba(59, 130, 246, 0.1);
         border-left-color: #3b82f6;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.8s linear infinite;
       }
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
     <script>
+      // Shim esencial para que las librerías no fallen al buscar 'process'
       window.process = { env: { API_KEY: "" } };
     </script>
     <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@19.0.0?external=*",
-    "react-dom": "https://esm.sh/react-dom@19.0.0?external=react",
-    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client?external=react,react-dom",
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
     "@google/genai": "https://esm.sh/@google/genai@0.21.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/"

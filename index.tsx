@@ -7,10 +7,19 @@ const loader = document.getElementById('loading-screen');
 
 if (container) {
   const root = ReactDOM.createRoot(container);
-  root.render(<App />);
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
   
-  // Ocultar cargador después de montar
-  if (loader) {
-    loader.style.display = 'none';
-  }
+  // Ocultar cargador con una pequeña transición para suavidad
+  setTimeout(() => {
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 400);
+    }
+  }, 500);
 }
