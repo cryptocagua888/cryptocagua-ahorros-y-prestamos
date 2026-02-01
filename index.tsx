@@ -8,22 +8,20 @@ const loader = document.getElementById('loading-screen');
 if (container) {
   const root = ReactDOM.createRoot(container);
   
-  // Renderizado principal
+  // Renderizado principal con StrictMode para asegurar calidad
   root.render(
     <React.StrictMode>
       <App />
     </React.StrictMode>
   );
   
-  // Ocultar cargador tras el primer ciclo de renderizado para evitar parpadeos negros
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      if (loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => {
-          loader.style.display = 'none';
-        }, 400);
-      }
-    }, 300);
-  });
+  // Ocultar el cargador una vez que el DOM inicial está listo
+  setTimeout(() => {
+    if (loader) {
+      loader.style.opacity = '0';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 400);
+    }
+  }, 500);
 }
