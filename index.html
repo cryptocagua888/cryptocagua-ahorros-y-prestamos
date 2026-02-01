@@ -37,10 +37,34 @@
         animation: spin 0.8s linear infinite;
       }
       @keyframes spin { to { transform: rotate(360deg); } }
+      #error-display {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: #0a0f1e;
+        color: #f87171;
+        padding: 40px;
+        z-index: 10000;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        overflow: auto;
+        white-space: pre-wrap;
+      }
     </style>
     <script>
-      // Shim esencial para que las librerías no fallen al buscar 'process'
+      // Shim para compatibilidad con librerías que esperan process.env
       window.process = { env: { API_KEY: "" } };
+      
+      // Captura de errores críticos para diagnóstico en pantalla
+      window.onerror = function(msg, url, line, col, error) {
+        console.error("Global Error:", msg, error);
+        const display = document.getElementById('error-display');
+        if (display) {
+          display.style.display = 'block';
+          display.innerText = "ERROR DE EJECUCIÓN:\n" + msg + "\n\nUbicación: " + url + ":" + line + "\nDetalles: " + (error ? error.stack : 'N/A');
+        }
+        return false;
+      };
     </script>
     <script type="importmap">
 {
@@ -58,7 +82,9 @@
 <body>
     <div id="loading-screen">
       <div class="spinner"></div>
+      <p style="margin-top: 20px; font-size: 10px; font-weight: 900; letter-spacing: 0.3em; color: #3b82f6; text-transform: uppercase;">Cryptocagua Iniciando</p>
     </div>
+    <div id="error-display"></div>
     <div id="root"></div>
 </body>
 </html>
