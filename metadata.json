@@ -1,0 +1,7 @@
+{
+  "name": "Cryptocagua Ahorro y Préstamos",
+  "description": "Una plataforma moderna de gestión financiera que permite a los usuarios monitorear sus ahorros, saldos y solicitar préstamos basados en el 50% de sus activos, integrada con un asistente inteligente de Gemini.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
